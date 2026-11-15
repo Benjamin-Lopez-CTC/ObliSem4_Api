@@ -1,8 +1,11 @@
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using ObliSem4Api.Data;
-using ObliSem4Api.Models;
 using ObliSem4Api.DTO;
+using ObliSem4Api.Interfaces;
+using ObliSem4Api.Models;
+using ObliSem4Api.Repository;
+using ObliSem4Api.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
     options.UseMySQL(connectionString!);
 });
+
+//Projects
+builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
+builder.Services.AddScoped<IProjectsService, ProjectsService>();
+
+//Tasks
+builder.Services.AddScoped<ITasksService, TasksService>();
+builder.Services.AddScoped<ITasksRepository, TasksRepository>();
+
+// Users
+builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
 var app = builder.Build();
 

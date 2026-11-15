@@ -1,6 +1,6 @@
 using System;
 
-namespace ObliSem4Api.DTO;
+namespace ObliSem4Api.DTO.Projects;
 
 public class ProjectReadDTO
 {

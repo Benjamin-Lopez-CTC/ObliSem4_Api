@@ -60,6 +60,60 @@ namespace ObliSem4Api.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccentColor = "blue",
+                            CreatedAt = new DateTime(2026, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Desarrollo de una plataforma web para gestionar tareas y proyectos.",
+                            EndDate = new DateOnly(2026, 12, 20),
+                            IsDeleted = false,
+                            Name = "Desarrollo de aplicación web",
+                            StartDate = new DateOnly(2026, 1, 15),
+                            Status = "En progreso",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccentColor = "orange",
+                            CreatedAt = new DateTime(2026, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Planificación y ejecución de reformas en la oficina principal.",
+                            EndDate = new DateOnly(2027, 1, 15),
+                            IsDeleted = false,
+                            Name = "Reforma de oficina",
+                            StartDate = new DateOnly(2026, 11, 20),
+                            Status = "Pendiente",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AccentColor = "green",
+                            CreatedAt = new DateTime(2026, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Diseño y ejecución de una campaña de marketing digital.",
+                            EndDate = new DateOnly(2026, 6, 30),
+                            IsDeleted = false,
+                            Name = "Campaña de marketing",
+                            StartDate = new DateOnly(2026, 3, 1),
+                            Status = "Completado",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AccentColor = "purple",
+                            CreatedAt = new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Organización de eventos corporativos durante el año.",
+                            EndDate = new DateOnly(2026, 12, 15),
+                            IsDeleted = false,
+                            Name = "Organización de eventos",
+                            StartDate = new DateOnly(2026, 8, 1),
+                            Status = "En progreso",
+                            UserId = 2
+                        });
                 });
 
             modelBuilder.Entity("ObliSem4Api.Models.Subtasks", b =>
@@ -83,6 +137,57 @@ namespace ObliSem4Api.Migrations
                     b.HasIndex("TaskId");
 
                     b.ToTable("Subtasks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Diseñar pantalla de inicio",
+                            IsCompleted = true,
+                            TaskId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Diseñar pantalla de proyectos",
+                            IsCompleted = false,
+                            TaskId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Diseñar pantalla de tareas",
+                            IsCompleted = false,
+                            TaskId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Crear endpoint de registro",
+                            IsCompleted = true,
+                            TaskId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Crear endpoint de login",
+                            IsCompleted = false,
+                            TaskId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Contactar salones disponibles",
+                            IsCompleted = true,
+                            TaskId = 6
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "Comparar presupuestos",
+                            IsCompleted = false,
+                            TaskId = 6
+                        });
                 });
 
             modelBuilder.Entity("ObliSem4Api.Models.Tasks", b =>
@@ -158,6 +263,128 @@ namespace ObliSem4Api.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Tasks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccentColor = "blue",
+                            CreatedAt = new DateTime(2026, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Crear los diseños de las pantallas principales de la aplicación.",
+                            DueDate = new DateTime(2026, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueEmailSent = false,
+                            IsDeleted = false,
+                            Priority = "high",
+                            ProjectId = 1,
+                            Title = "Diseñar interfaz principal",
+                            UserId = 1,
+                            ZoneAddress = "Montevideo, Uruguay",
+                            ZoneLatitude = -34.9011,
+                            ZoneLongitude = -56.164499999999997,
+                            ZoneRadiusMeters = 100
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccentColor = "red",
+                            CreatedAt = new DateTime(2026, 10, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Implementar registro, inicio de sesión y cierre de sesión.",
+                            DueDate = new DateTime(2026, 11, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueEmailSent = false,
+                            IsDeleted = false,
+                            Priority = "high",
+                            ProjectId = 1,
+                            Title = "Implementar autenticación",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AccentColor = "green",
+                            CreatedAt = new DateTime(2026, 10, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Documentar todos los endpoints de la API utilizando Swagger.",
+                            DueDate = new DateTime(2026, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueEmailSent = false,
+                            IsDeleted = false,
+                            Priority = "low",
+                            ProjectId = 1,
+                            Title = "Documentar API",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AccentColor = "orange",
+                            CreatedAt = new DateTime(2026, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Comprar materiales necesarios para el trabajo.",
+                            DueDate = new DateTime(2026, 11, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueEmailSent = false,
+                            IsDeleted = false,
+                            Priority = "high",
+                            Title = "Comprar materiales",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AccentColor = "purple",
+                            CompletedAt = new DateTime(2026, 5, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Crear las publicaciones para redes sociales.",
+                            DueDate = new DateTime(2026, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueEmailSent = true,
+                            IsDeleted = false,
+                            Priority = "low",
+                            ProjectId = 3,
+                            Title = "Diseñar publicaciones",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AccentColor = "yellow",
+                            CreatedAt = new DateTime(2026, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Contactar proveedores y reservar el salón para el evento.",
+                            DueDate = new DateTime(2026, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueEmailSent = false,
+                            IsDeleted = false,
+                            Priority = "high",
+                            ProjectId = 4,
+                            Title = "Reservar salón",
+                            UserId = 2,
+                            ZoneAddress = "Centro, Montevideo, Uruguay",
+                            ZoneLatitude = -34.905500000000004,
+                            ZoneLongitude = -56.191000000000003,
+                            ZoneRadiusMeters = 200
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AccentColor = "blue",
+                            CompletedAt = new DateTime(2026, 11, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Preparar y enviar el informe mensual de actividades.",
+                            DueDate = new DateTime(2026, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueEmailSent = true,
+                            IsDeleted = false,
+                            Priority = "low",
+                            Title = "Enviar informe mensual",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AccentColor = "orange",
+                            CreatedAt = new DateTime(2026, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Analizar los costos estimados de la reforma.",
+                            DueDate = new DateTime(2026, 11, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DueEmailSent = false,
+                            IsDeleted = true,
+                            Priority = "high",
+                            ProjectId = 2,
+                            Title = "Revisar presupuesto",
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("ObliSem4Api.Models.Users", b =>
@@ -190,6 +417,35 @@ namespace ObliSem4Api.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2026, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "juan@gmail.com",
+                            PasswordHash = "HASH_PRUEBA_123",
+                            Role = "User",
+                            Theme = "light"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "maria@gmail.com",
+                            PasswordHash = "HASH_PRUEBA_456",
+                            Role = "User",
+                            Theme = "dark"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2026, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@gmail.com",
+                            PasswordHash = "HASH_PRUEBA_789",
+                            Role = "Admin",
+                            Theme = "light"
+                        });
                 });
 
             modelBuilder.Entity("ObliSem4Api.Models.Projects", b =>
