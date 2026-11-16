@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MySql.EntityFrameworkCore.Metadata;
+using Microting.EntityFrameworkCore.MySql.Metadata;
+using System;
 
 #nullable disable
 
@@ -13,14 +14,14 @@ namespace ObliSem4Api.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
-                .Annotation("MySQL:Charset", "utf8mb4");
+                .Annotation("MySql:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Email = table.Column<string>(type: "varchar(255)", nullable: false),
                     PasswordHash = table.Column<string>(type: "longtext", nullable: false),
                     Role = table.Column<string>(type: "longtext", nullable: false),
@@ -31,14 +32,14 @@ namespace ObliSem4Api.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                .Annotation("MySql:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: false),
                     Description = table.Column<string>(type: "longtext", nullable: false),
@@ -59,14 +60,14 @@ namespace ObliSem4Api.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                .Annotation("MySql:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Tasks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: true),
                     Title = table.Column<string>(type: "longtext", nullable: false),
@@ -103,14 +104,14 @@ namespace ObliSem4Api.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
-                .Annotation("MySQL:Charset", "utf8mb4");
+                .Annotation("MySql:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Subtasks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TaskId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "longtext", nullable: false),
                     IsCompleted = table.Column<bool>(type: "tinyint(1)", nullable: false)

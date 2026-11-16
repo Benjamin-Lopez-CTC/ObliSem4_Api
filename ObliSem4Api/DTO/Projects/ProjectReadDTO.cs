@@ -13,6 +13,6 @@ public class ProjectReadDTO
     public bool IsDeleted { get; set; }
     public DateTime CreatedAt { get; set; }
     public int TasksCount { get; set; } = 0;
-    public int CompleteTasks {get; set;} = 0;
-    public int ProgressPercent => TasksCount == 0 ? 0 : CompleteTasks * 100 / TasksCount;
+    public int CompleteTasks { get; set; } = 0;
+    public int ProgressPercent => TasksCount == 0 ? 0 : CompleteTasks * 100 / TasksCount; 
 }
