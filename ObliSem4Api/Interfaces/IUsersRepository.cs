@@ -1,10 +1,13 @@
 ﻿using ObliSem4Api.Models;
-using ObliSem4Api.DTO.Users;
 
 namespace ObliSem4Api.Interfaces
 {
     public interface IUsersRepository
     {
-        Task<List<Users>> GetAll();
+        Task<List<Users>> GetAllAsync();
+        Task<Users?> GetByEmailAsync(string email);
+        Task<Users?> GetByIdAsync(int id);
+        Task<bool> UpdateThemeAsync(int id, string? theme);
+        Task AddAsync(Users user);
     }
 }
