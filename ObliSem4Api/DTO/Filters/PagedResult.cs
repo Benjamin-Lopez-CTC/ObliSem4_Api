@@ -9,5 +9,5 @@ public class PagedResult<T>
     public int Total { get; set; }
     public IReadOnlyList<T> Items { get; init; } = [];
 
-    public int TotalPagina => (int)Math.Ceiling(Total / (double)PageSize);
+    public int TotalPagina { get; set; }
 }

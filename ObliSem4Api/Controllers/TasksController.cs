@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
+using ObliSem4Api.DTO.Filters;
 using ObliSem4Api.DTO.Tasks;
 using ObliSem4Api.Interfaces;
 
@@ -15,16 +18,43 @@ namespace ObliSem4Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TaskReadDto>>> GetAll()
+        public async Task<ActionResult<PagedResult<TaskReadDto>>> GetAll(
+               [FromQuery] string? Title = null,
+               [FromQuery] string? Description = null,
+               [FromQuery] string? Priority = null,
+               [FromQuery] DateTime? DueDate = null,
+               [FromQuery] DateTime? CompletedAt = null,
+               [FromQuery] bool? IsDeleted = null,
+               [FromQuery] string? AccentColor = null,
+               [FromQuery] DateTime? CreatedAt = null,
+               [FromQuery] bool? HasLocation = null,
+               [FromQuery] bool? HasAttachment = null,
+               [FromQuery] int page = 1,
+               [FromQuery] int pageSize = 10
+            )
         {
             try
             {
-                var tareas = await _service.GetAll();
+                var tareas = await _service.GetAll(
+                    Title,
+                    Description,
+                    Priority,
+                    DueDate,
+                    CompletedAt,
+                    IsDeleted,
+                    AccentColor,
+                    CreatedAt,
+                    HasLocation,
+                    HasAttachment,
+                    page,
+                    pageSize
+                );
+
                 return Ok(tareas);
             }
-            catch (Exception)
+            catch (ArgumentException ex)
             {
-                return StatusCode(500, "Error interno del servidor");
+                return BadRequest(ex.Message);
             }
         }
     }
