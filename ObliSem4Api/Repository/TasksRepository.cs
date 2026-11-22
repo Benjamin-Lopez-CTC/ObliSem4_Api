@@ -16,6 +16,7 @@ namespace ObliSem4Api.Repository
             _context = context;
         }
 
+        // Obtiene todas las tareas del usuario actualmente en sesion, con filtros opcionales.
         public async Task<PagedResult<TaskReadDto>> GetFilteredAsync(int userId, TaskFilterDto filter)
         {
             IQueryable<Tasks> query = _context.Tasks
@@ -24,17 +25,17 @@ namespace ObliSem4Api.Repository
 
             //Validaciones
 
-            if(filter.Page < 1)
+            if (filter.Page < 1)
             {
                 filter.Page = 1;
             }
-                
-            if (filter.PageSize < 1) 
-            { 
-                filter.PageSize = 10; 
+
+            if (filter.PageSize < 1)
+            {
+                filter.PageSize = 10;
             }
-                
-            if(filter.PageSize > 100) 
+
+            if (filter.PageSize > 100)
             {
                 filter.PageSize = 100;
             }
@@ -43,7 +44,7 @@ namespace ObliSem4Api.Repository
             {
                 query = query.Where(e => e.ProjectId == filter.ProjectId.Value);
             }
-                
+
             if (!string.IsNullOrWhiteSpace(filter.Title))
             {
                 query = query.Where(e => e.Title.Contains(filter.Title));
@@ -135,7 +136,7 @@ namespace ObliSem4Api.Repository
                 AttachmentName = e.AttachmentName,
                 AttachmentType = e.AttachmentType,
                 AttachmentUrl = e.AttachmentUrl
-            })       
+            })
             .ToListAsync();
 
             return new PagedResult<TaskReadDto>
@@ -145,6 +146,13 @@ namespace ObliSem4Api.Repository
                 Page = filter.Page,
                 PageSize = filter.PageSize
             };
+        }
+
+        // Crea una nueva tarea para el usuario actualmente en sesion.
+        public async Task CreateAsync(Tasks tarea)
+        {
+            await _context.Tasks.AddAsync(tarea);
+            await _context.SaveChangesAsync();
         }
     }
 }

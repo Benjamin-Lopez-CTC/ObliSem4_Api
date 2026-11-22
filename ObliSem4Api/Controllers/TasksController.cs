@@ -32,6 +32,8 @@ namespace ObliSem4Api.Controllers
             return userId;
         }
 
+        // GET: api/tasks
+        // Obtiene todas las tareas del usuario actualmente en sesion, con filtros opcionales.
         [HttpGet]
         public async Task<ActionResult<PagedResult<TaskReadDto>>> GetAll([FromQuery] TaskFilterDto filter)
         {
@@ -40,13 +42,41 @@ namespace ObliSem4Api.Controllers
                 var userId = GetCurrentUserId();
                 var tareas = await _service.GetFilteredAsync(userId, filter);
                 return Ok(tareas);
-            } catch (UnauthorizedAccessException ex)
+            } 
+            catch (UnauthorizedAccessException ex)
             {
                 return Unauthorized(ex.Message);
-            } catch (ArgumentException ex)
+            } 
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
-            } catch (Exception)
+            } 
+            catch (Exception)
+            {
+                return StatusCode(500, "Error interno del servidor");
+            }
+        }
+
+        // POST: api/tasks
+        // Crea una nueva tarea para el usuario actualmente en sesion.
+        [HttpPost]
+        public async Task<ActionResult<TaskReadDto>> Create([FromBody] TaskCreateDto taskCreateDto)
+        {
+            try
+            {
+                var userId = GetCurrentUserId();
+                var createdTask = await _service.CreateAsync(userId, taskCreateDto);
+                return Ok(createdTask);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
             {
                 return StatusCode(500, "Error interno del servidor");
             }
