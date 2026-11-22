@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using ObliSem4Api.DTO.Filters;
 using ObliSem4Api.DTO.Tasks;
 using ObliSem4Api.Interfaces;
 
 namespace ObliSem4Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class TasksController : ControllerBase
@@ -17,44 +18,37 @@ namespace ObliSem4Api.Controllers
             _service = service;
         }
 
+        // Obtiene el id del usuario actualmente en sesion
+        private int GetCurrentUserId()
+        {
+            var idClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(idClaim, out var userId))
+            {
+                throw new UnauthorizedAccessException(
+                    "Token invalido");
+            }
+
+            return userId;
+        }
+
         [HttpGet]
-        public async Task<ActionResult<PagedResult<TaskReadDto>>> GetAll(
-               [FromQuery] string? Title = null,
-               [FromQuery] string? Description = null,
-               [FromQuery] string? Priority = null,
-               [FromQuery] DateTime? DueDate = null,
-               [FromQuery] DateTime? CompletedAt = null,
-               [FromQuery] bool? IsDeleted = null,
-               [FromQuery] string? AccentColor = null,
-               [FromQuery] DateTime? CreatedAt = null,
-               [FromQuery] bool? HasLocation = null,
-               [FromQuery] bool? HasAttachment = null,
-               [FromQuery] int page = 1,
-               [FromQuery] int pageSize = 10
-            )
+        public async Task<ActionResult<PagedResult<TaskReadDto>>> GetAll([FromQuery] TaskFilterDto filter)
         {
             try
             {
-                var tareas = await _service.GetAll(
-                    Title,
-                    Description,
-                    Priority,
-                    DueDate,
-                    CompletedAt,
-                    IsDeleted,
-                    AccentColor,
-                    CreatedAt,
-                    HasLocation,
-                    HasAttachment,
-                    page,
-                    pageSize
-                );
-
+                var userId = GetCurrentUserId();
+                var tareas = await _service.GetFilteredAsync(userId, filter);
                 return Ok(tareas);
-            }
-            catch (ArgumentException ex)
+            } catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            } catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            } catch (Exception)
+            {
+                return StatusCode(500, "Error interno del servidor");
             }
         }
     }

@@ -4,8 +4,6 @@ using ObliSem4Api.DTO.Filters;
 using ObliSem4Api.DTO.Tasks;
 using ObliSem4Api.Interfaces;
 using ObliSem4Api.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ObliSem4Api.Repository
 {
@@ -18,88 +16,88 @@ namespace ObliSem4Api.Repository
             _context = context;
         }
 
-        public async Task<PagedResult<TaskReadDto>> GetAll(
-                   string? Title,
-                   string? Description,
-                   string? Priority,
-                   DateTime? DueDate,
-                   DateTime? CompletedAt,
-                   bool? IsDeleted,
-                   string? AccentColor,
-                   DateTime? CreatedAt,
-                   bool? HasLocation,
-                   bool? HasAttachment,
-                   int page = 1,
-                   int pageSize = 10
-            )
+        public async Task<PagedResult<TaskReadDto>> GetFilteredAsync(int userId, TaskFilterDto filter)
         {
-            IQueryable<Tasks> query = _context.Tasks.AsNoTracking();
+            IQueryable<Tasks> query = _context.Tasks
+                .Where(t => t.UserId == userId)
+                .AsNoTracking();
 
             //Validaciones
 
-            if(page < 1)
+            if(filter.Page < 1)
             {
-                page = 1;
+                filter.Page = 1;
             }
                 
-            if (pageSize < 1) 
+            if (filter.PageSize < 1) 
             { 
-                pageSize = 10; 
+                filter.PageSize = 10; 
             }
                 
-            if(pageSize > 100) 
+            if(filter.PageSize > 100) 
             {
-                pageSize = 100;
+                filter.PageSize = 100;
+            }
+
+            if (filter.ProjectId.HasValue)
+            {
+                query = query.Where(e => e.ProjectId == filter.ProjectId.Value);
             }
                 
-            if (!string.IsNullOrWhiteSpace(Title))
+            if (!string.IsNullOrWhiteSpace(filter.Title))
             {
-                query = query.Where(e => e.Title.Contains(Title));
+                query = query.Where(e => e.Title.Contains(filter.Title));
             }
 
-            if (!string.IsNullOrWhiteSpace(Description))
+            if (!string.IsNullOrWhiteSpace(filter.Description))
             {
-                query = query.Where(e => e.Description.Contains(Description));
+                query = query.Where(e => e.Description.Contains(filter.Description));
             }
 
-            if (!string.IsNullOrWhiteSpace(Priority))
+            if (!string.IsNullOrWhiteSpace(filter.Priority))
             {
-                query = query.Where(e => e.Priority.Contains(Priority));
+                query = query.Where(e => e.Priority == filter.Priority);
             }
 
-            if (!string.IsNullOrWhiteSpace(AccentColor))
+            if (!string.IsNullOrWhiteSpace(filter.AccentColor))
             {
-                query = query.Where(e => e.AccentColor == AccentColor);
+                query = query.Where(e => e.AccentColor == filter.AccentColor);
             }
 
-            if (DueDate.HasValue)
+            if (filter.DueDate.HasValue)
             {
-                query = query.Where(e => e.DueDate.HasValue && e.DueDate.Value.Date == DueDate.Value.Date);
+                query = query.Where(e => e.DueDate.HasValue && e.DueDate.Value.Date == filter.DueDate.Value.Date);
             }
 
-            if (CompletedAt.HasValue)
+            if (filter.CompletedAt.HasValue)
             {
-                query = query.Where(e => e.CompletedAt.HasValue && e.CompletedAt.Value.Date == CompletedAt.Value.Date);
+                query = query.Where(e => e.CompletedAt.HasValue && e.CompletedAt.Value.Date == filter.CompletedAt.Value.Date);
             }
 
-            if (CreatedAt.HasValue)
+            if (filter.CreatedAt.HasValue)
             {
-                query = query.Where(e => e.CreatedAt.Date == CreatedAt.Value.Date);
+                query = query.Where(e => e.CreatedAt.Date == filter.CreatedAt.Value.Date);
             }
 
-            if (IsDeleted.HasValue)
+            if (filter.IsDeleted)
             {
-                query = query.Where(e => e.IsDeleted == IsDeleted.Value);
+                query = query.IgnoreQueryFilters()
+                    .Where(e => e.UserId == userId && e.IsDeleted == true);
             }
 
-            if (HasLocation.HasValue)
+            if (filter.HasSubtasks)
             {
-                query = query.Where(e => HasLocation.Value ? e.ZoneLatitude != null && e.ZoneLongitude != null : e.ZoneLatitude == null || e.ZoneLongitude == null);
+                query = query.Where(e => e.Subtasks!.Any());
             }
 
-            if (HasAttachment.HasValue)
+            if (filter.HasLocation)
             {
-                query = query.Where(e => HasAttachment.Value ? e.AttachmentKey != null : e.AttachmentKey == null);
+                query = query.Where(e => e.ZoneLatitude != null && e.ZoneLongitude != null);
+            }
+
+            if (filter.HasAttachment)
+            {
+                query = query.Where(e => e.AttachmentKey != null);
             }
 
             //Cantidad de registros, paginacion y query final
@@ -108,13 +106,14 @@ namespace ObliSem4Api.Repository
 
             query = query.OrderBy(e => e.Title).ThenBy(e => e.Id);
 
-            int salto = (page - 1) * pageSize;
+            int salto = (filter.Page - 1) * filter.PageSize;
 
             var tasks = await query
             .Skip(salto)
-            .Take(pageSize)
+            .Take(filter.PageSize)
             .Select(e => new TaskReadDto
             {
+                IdProject = e.ProjectId,
                 Title = e.Title,
                 Description = e.Description,
                 Priority = e.Priority,
@@ -143,8 +142,8 @@ namespace ObliSem4Api.Repository
             {
                 Items = tasks,
                 Total = total,
-                Page = page,
-                PageSize = pageSize
+                Page = filter.Page,
+                PageSize = filter.PageSize
             };
         }
     }
