@@ -12,11 +12,12 @@ public class ProjectCreateDTO
     public string? Description { get; set; } = string.Empty;
 
     [Required]
-    [RegularExpression("^(Pendiente|En progreso|Completado)$", ErrorMessage = "El estado debe ser 'Pendiente', 'En progreso' o 'Completado'.")]
+    [AllowedValues("Pendiente", "En progreso", "Completado", ErrorMessage = "El estado debe ser 'Pendiente', 'En progreso' o 'Completado'.")]
     public string Status { get; set; } = string.Empty;
+
     public DateOnly? StartDate { get; set; }
     public DateOnly? EndDate { get; set; }
 
-    [RegularExpression("^red$|^blue$|^green$|^yellow$|^purple$|^orange$", ErrorMessage = "Color invalido.")]
+    [AllowedValues("red", "blue", "green", "yellow", "purple", "orange", null, ErrorMessage = "Color invalido")]
     public string? AccentColor { get; set; }
 }

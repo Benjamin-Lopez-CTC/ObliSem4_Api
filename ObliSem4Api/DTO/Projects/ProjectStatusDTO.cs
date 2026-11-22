@@ -6,6 +6,6 @@ namespace ObliSem4Api.DTO.Projects;
 public class ProjectStatusDTO
 {
     [Required]
-    [RegularExpression("^(Pendiente|En progreso|Completado)$", ErrorMessage = "El estado debe ser 'Pendiente', 'En progreso' o 'Completado'.")]
+    [AllowedValues("Pendiente", "En progreso", "Completado", "Archivado", ErrorMessage = "El estado debe ser 'Pendiente', 'En progreso', 'Completado' o 'Archivado'.")]
     public string Status { get; set; } = string.Empty;
 }
